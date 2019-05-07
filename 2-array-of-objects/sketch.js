@@ -18,6 +18,7 @@ function draw(){
 	    balls[i].drawBall();
         balls[i].moveBall();
         balls[i].bounceBall();
+
 	  }
 
 }
@@ -30,16 +31,31 @@ function keyPressed(){ //every time you push a key, make a new ball from the bal
 //ball class from which to create new balls with similar properties.
 class Ball {
 
-	constructor(x,y,falling){ //every ball needs an x value and a y value
+	constructor(x,y,falling,speed){ //every ball needs an x value and a y value
 		    this.x = x;
     		this.y = y;
         this.falling=falling;
+        this.speed = speed;
 	}
 
 	drawBall(){  // draw a ball on the screen at x,y
     		stroke(0);
     		fill("red");
 		    ellipse(this.x,this.y,10,10);
+
+
+        	moveBall(){
+            if (keyIsDown(UP_ARROW)) { //if you hold the up arrow, move up by speed
+               this.x -= this.speed;
+            }
+
+            if (keyIsDown(DOWN_ARROW)) { // if you hold the down arrow, move down by speed
+                this.x += this.speed;
+            }
+        	}
+
+          die(){
+
 	}
 
 	moveBall(){ //update the location of the ball, so it moves across the screen
