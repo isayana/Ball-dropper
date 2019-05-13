@@ -12,7 +12,9 @@ function setup() {
 function draw(){
 	background(220);
 
-
+}
+function keyPressed() {
+  if (keyCode === ENTER
 //	draw all the balls in that array
 	for (let i = 0; i < balls.length; i++) {
 	    balls[i].drawBall();
@@ -42,7 +44,7 @@ class Ball {
     		stroke(0);
     		fill("red");
 		    ellipse(this.x,this.y,10,10);
-
+}
 
         	moveBall(){
             if (keyIsDown(UP_ARROW)) { //if you hold the up arrow, move up by speed
@@ -55,8 +57,8 @@ class Ball {
         	}
 
           die(){
+          }
 
-	}
 
 	moveBall(){ //update the location of the ball, so it moves across the screen
 		this.x = this.x+0;
