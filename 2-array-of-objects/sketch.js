@@ -81,7 +81,7 @@ class Ball {
 	drawBall(){  // draw a ball on the screen at x,y
     		stroke(0);
     		fill("red");
-		    ellipse(this.x,20,15,15);
+		    ellipse(this.x,20,30,30);
 
 	}
 
