@@ -1,90 +1,117 @@
-//create an empty array called balls
 let balls = [];
-let hitcount = 0
-let timer = 0
-//create a variable to hold your avatar
-let me;
-let died = false;
+let bumpers = [];
+let bumper;
+
 
 function setup() {
   createCanvas(800, 800);
 
-  //make one avatar called me
-  me = new Bucket(width/3, 30, 3);
+  //draw the variable bumpers
+  bumper = new Bumper(0,0,0);
 
 }
-
 function draw(){
 	background(220);
 
-  me.drawMe();
-  me.die();
-  Gametimer();
-
-
+  bumper.drawbumper();
 
 //	draw all the balls in that array
 	for (let i = 0; i < balls.length; i++) {
-	 	      balls[i].drawBall();
-       	  balls[i].moveBall();
-          if (died == false){
-            balls[i].bounceBall();
-          }
-
+	      balls[i].drawBall();
+        balls[i].moveBall();
+        balls[i].fall();
+        print(balls[i].falling);
 	  }
-
 }
 
-function Gametimer() {
+function keyPressed(){ //every time you push a key, make a new ball from the ball class and add it to the balls array
 
-  noStroke();
-  fill("red");
-  textAlign(0, 10);
-  textSize(30);
-  text(timer, 650, 40);
+  if (keyCode === ENTER) {
+    let  b = new Ball(400, 0,2,false);
+    balls.push(b);
+    console.log(balls);
+   }
 
-  // while (timer > 0) {  // this doesn't work because it's all happening at the same time
-  //   timer --;
-  // }
+    if (keyCode === DOWN_ARROW){
+       for (let i = 0; i < balls.length; i++) {
 
-  // frameCount --> this keeps track of the number of times the program has gone throught the code, 60 = 1 second
-  // % ---> this is the Modulo operator, it divides numbers and evaluates to the remainder: 17 % 5 evaluates to 2 remainder
-  // this can be used to determine if the number on the left is divisible by the number on the right
-  if (died == false){
-    if (frameCount % 60 == 0 && timer >= 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
-      timer ++;
-  }
-
-  }
+     balls[i].falling = true;
+      }
+   }
 }
 
-//avatar class
-class Bucket {
+class Bumper {
 
-	constructor(x,y, speed){ //every avatar needs an x value, a y value, and a speed
+
+	constructor(x,y, hitcount){
 		    this.x = x;
     		this.y = y;
         this.hitcount = hitcount;
 	}
 
-  drawMe(){
+  drawbumper(){
+    push();
+    translate(this.x, this.y)
+    rotate(0.75);
     fill("red")
-    rect(400,750,50,50)
+    rect(600,200,160,40)
+    pop();
+
+    push();
+    translate(350,350);
+    fill("red")
+    rect(150,0,400,60)
+    pop();
 
   }
 
+}
 
-  die(){
-    if (hitcount == 1) {
-      print("Level Completed");
-      died = true
-      textSize(32);
-      fill("red")
-      noStroke();
-      text('Level Completed',10,47);
 
+//ball class from which to create new balls with similar properties.
+class Ball {
+
+	constructor(x,y,speed,falling){ //every ball needs an x value and a y value
+		    this.x = x;
+    		this.y = y;
+       this.speed = speed;
+       this.falling = falling;
+	}
+
+	drawBall(){  // draw a ball on the screen at x,y
+    		stroke(0);
+    		fill("red");
+		    ellipse(this.x,20,30,30);
+
+	}
+
+	moveBall(){ //update the location of the ball, so it moves across the screen
+
+    if (keyIsDown(RIGHT_ARROW)&& this.falling==false) { //if you hold the up arrow, move up by speed
+       this.x = this.x+5;
+    }
+
+    if (keyIsDown(LEFT_ARROW)&& this.falling==false) { // if you hold the down arrow, move down by speed
+        this.x = this.x-5;
+    }
+    if(this.falling==true){
+      this.y = this.y+2;
+    }
+	}
+
+  fall(){
+
+
+  }
+
+  //if the ball hits the person, change the speed value to negative (send it in the opposite direction)
+    bounceBall(){
+      for( let i = 0; i<bumpers.length;i++){
+        if (this.x >= bumpers[i].x-10  && this.x <= bumper[i].x+15 && this.y > me.y-40 && this.y < me.y+40){
+            this.speed = -this.speed;
+        }
+      }
 
     }
-  }
 
 }
